@@ -1,0 +1,353 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e0f2f7; /* 부드러운 하늘색 배경 */
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* 첫 번째 h1 (메인 제목) */
+h1 {
+    color: #007bff; /* 파란색 */
+    margin-bottom: 5px; /* 아래쪽 여백을 줄여 다음 h1과 가깝게 붙입니다 */
+    text-align: center;
+}
+
+/* 두 번째 h1 (개발자 정보) - 새로 추가된 스타일 */
+h1.developer-signature {
+    font-size: 1.2em; /* 기본 h1보다 글씨 크기 줄임 */
+    color: #6c757d; /* 회색으로 변경 */
+    margin-top: 0px; /* 위쪽 여백을 없애서 이전 h1에 붙입니다 */
+    margin-bottom: 30px; /* 아래쪽 여백은 그대로 두어 버튼과 간격을 유지합니다 */
+    text-align: center;
+    font-weight: normal; /* 필요시 글씨 굵기 조절 (기본 h1은 보통 bold) */
+}
+
+
+/* 새 룰렛 추가 버튼 */
+#addRouletteButton {
+    padding: 12px 25px;
+    background-color: #28a745; /* 녹색 계열 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+#addRouletteButton:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+#allRoulettesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px; /* 룰렛 인스턴스 사이 간격 */
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px; /* 최대 너비 설정 */
+}
+
+/* 개별 룰렛 컨테이너 스타일 */
+.roulette-instance-container {
+    border: 1px solid #b3e0ff; /* 연한 파란색 테두리 */
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    width: 380px; /* 룰렛 디스플레이 영역에 맞게 조정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box; /* 패딩, 보더가 너비에 포함되도록 */
+}
+
+/* 룰렛 삭제 버튼 */
+.delete-roulette-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #dc3545; /* 빨간색 */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease;
+}
+
+.delete-roulette-button:hover {
+    background-color: #c82333;
+}
+
+/* 룰렛 제목 */
+h2 {
+    font-size: 1.8em;
+    color: #0056b3;
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.roulette-title-display {
+    cursor: pointer;
+    margin-right: 5px;
+    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트 ...으로 표시 */
+    max-width: 80%; /* 부모 요소 대비 최대 너비 */
+}
+
+/* 제목 편집 버튼 (연필 아이콘) */
+.edit-title-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 5px;
+    vertical-align: middle;
+    width: 24px; /* 적절한 크기로 조정 */
+    height: 24px; /* 적절한 크기로 조정 */
+    /* SVG 아이콘을 base64 인코딩하여 배경 이미지로 사용 */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%236c757d"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.7;
+    display: inline-flex; /* 텍스트와 같은 라인에 정렬 */
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+}
+
+.edit-title-button:hover {
+    opacity: 1;
+}
+
+/* 제목 편집 input */
+.roulette-title-input {
+    font-size: 1.5em; /* h2 폰트 크기와 비슷하게 */
+    border: 1px solid #a0d9ff; /* 연한 파란색 테두리 */
+    padding: 5px;
+    margin-top: -5px; /* 약간 위로 올려서 정렬 */
+    margin-bottom: 5px;
+    width: calc(100% - 60px); /* 편집 버튼과 여백 공간 고려 */
+    border-radius: 5px;
+}
+
+
+/* 항목 입력 섹션 */
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.roulette-item-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #a0d9ff;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+/* 버튼 스타일 */
+.add-item-button, .spin-button {
+    padding: 10px 20px;
+    background-color: #007bff; /* 파란색 계열 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-item-button:hover, .spin-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.spin-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* 항목 목록 섹션 */
+.item-list-section {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.item-list-section h3 {
+    font-size: 1.2em;
+    color: #444;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.item-list {
+    list-style: none;
+    padding: 0;
+    max-height: 150px; /* 스크롤바 생성을 위한 최대 높이 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤바 생성 */
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #fcfcfc;
+}
+
+.item-list li {
+    background-color: #e9f7ff; /* 연한 파란색 배경 */
+    padding: 10px 15px;
+    margin-bottom: 2px; /* 항목 사이 미세한 간격 */
+    border-bottom: 1px solid #d3eaff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95em;
+    color: #333;
+}
+
+.item-list li:last-child {
+    border-bottom: none;
+}
+
+/* 항목 삭제 버튼 */
+.item-list .delete-btn {
+    background-color: #ffc107; /* 노란색 계열 */
+    color: #333;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s ease;
+}
+
+.item-list .delete-btn:hover {
+    background-color: #e0a800;
+}
+
+/* 룰렛 디스플레이 영역 */
+.roulette-display-area {
+    position: relative;
+    width: 300px; /* 룰렛 크기 */
+    height: 300px; /* 룰렛 크기 */
+    border-radius: 50%;
+    overflow: hidden; /* 룰렛 휠이 마커 밖으로 나가지 않게 */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* 더 강한 그림자 */
+    margin: 20px auto;
+    background-color: #eee; /* 로딩 시 배경 */
+}
+
+/* 룰렛 휠 */
+.roulette-wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* background는 JavaScript에서 conic-gradient로 설정 */
+    transform-origin: center center;
+    /* transition은 JavaScript에서 멈출 때 제어 */
+    /* animation은 JavaScript에서 startSpinning 시 추가 */
+}
+
+/* 룰렛 무한 회전 애니메이션 정의 */
+@keyframes spinInfinite {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 마커 (룰렛이 멈출 위치를 가리킴) - 크기 엄청 키움 */
+.marker {
+    position: absolute;
+    top: -30px; /* 룰렛 위에 마커 위치, 더 위로 */
+    left: 50%;
+    transform: translateX(-50%); /* 중앙 정렬 */
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent; /* 삼각형 너비 훨씬 더 키움 */
+    border-right: 30px solid transparent; /* 삼각형 너비 훨씬 더 키움 */
+    border-top: 40px solid #ff0000; /* 뾰족한 부분이 위(바깥쪽)를 향하도록, 높이 훨씬 더 키움 */
+    z-index: 10; /* 룰렛 위에 표시되도록 */
+}
+
+
+/* 룰렛 세그먼트 (조각) */
+.roulette-segment {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+    /* 각 세그먼트의 색상은 conic-gradient로 처리되므로 background-color 불필요 */
+}
+
+/* 룰렛 항목 텍스트 */
+.roulette-item-text {
+    position: absolute;
+    top: 50%; /* 룰렛 중심 기준 */
+    left: 50%; /* 룰렛 중심 기준 */
+    /* translateY(-105px)는 룰렛의 반지름 안에서 텍스트를 바깥쪽으로 이동시킵니다.
+       rotate(var(--text-rotation))은 JS에서 설정된 0deg로 텍스트 방향을 제어합니다. */
+    transform: translateX(-50%) translateY(-105px) rotate(var(--text-rotation));
+    font-weight: bold;
+    color: #333; /* 텍스트 색상 */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* 그림자 추가 */
+    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+    font-size: 1.1em; /* 텍스트 크기 */
+    z-index: 5; /* 세그먼트 위에 표시되도록 */
+}
+
+/* 결과 섹션 */
+.result-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.result-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #28a745; /* 결과 텍스트 색상 */
+    margin-top: 15px;
+    min-height: 1.5em; /* 텍스트가 없을 때도 높이 유지 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    #allRoulettesContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .roulette-instance-container {
+        width: 90%; /* 모바일에서 너비 확장 */
+        max-width: 380px; /* 하지만 너무 커지지 않도록 최대 너비 유지 */
+    }
+
+    .input-section {
+        flex-direction: column;
+    }
+
+    .add-item-button {
+        width: 100%; /* 버튼 너비 꽉 채움 */
+    }
+}
