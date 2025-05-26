@@ -307,7 +307,7 @@ h2 {
     top: 50%; /* 룰렛 중심 기준 */
     left: 50%; /* 룰렛 중심 기준 */
     /* translateY(-105px)는 룰렛의 반지름 안에서 텍스트를 바깥쪽으로 이동시킵니다.
-       rotate(var(--text-rotation))은 JS에서 설정된 0deg로 텍스트 방향을 제어합니다. */
+        rotate(var(--text-rotation))은 JS에서 설정된 0deg로 텍스트 방향을 제어합니다. */
     transform: translateX(-50%) translateY(-105px) rotate(var(--text-rotation));
     font-weight: bold;
     color: #333; /* 텍스트 색상 */
