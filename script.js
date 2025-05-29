@@ -38,8 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '#FFC0CB', '#98FB98', '#ADD8E6', '#DDA0DD', '#FFDEAD'
     ];
 
-    const LOCKED_MUSIC_PASSWORD = 'skyty0802kangty';
-    const LOCKED_MUSIC_VALUE = 'music4.mp3';
+    // Removed: LOCKED_MUSIC_PASSWORD and LOCKED_MUSIC_VALUE
     const DEVELOPER_PASSWORD = 'skyty0802developer';
 
     class Roulette {
@@ -211,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 만약 고려할 항목이 없지만 원래 아이템은 있을 경우 (예: 모두 숨김 처리됨),
             // 이 경우 전체 아이템을 기본 가중치로 포함하여 룰렛이 돌도록 합니다.
             if (totalWeight === 0 && this.items.length > 0) {
-                 // 그러나 이 경우에도 숨겨진 항목은 제외해야 합니다.
+                    // 그러나 이 경우에도 숨겨진 항목은 제외해야 합니다.
                 const fallbackItems = this.items.filter(item => !this.drawnItems.includes(item));
                 if (fallbackItems.length > 0) {
                     fallbackItems.forEach(item => {
@@ -631,23 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedMusic = musicOptions.querySelector('input[name="bgMusic"]:checked');
         if (selectedMusic) {
             const musicPath = selectedMusic.value;
-
-            if (musicPath === LOCKED_MUSIC_VALUE) {
-                const password = prompt('잠긴 노래입니다. 비밀번호를 입력하세요:');
-                if (password !== LOCKED_MUSIC_PASSWORD) {
-                    alert('비밀번호가 올바르지 않습니다.');
-                    const currentMusic = localStorage.getItem(LOCAL_STORAGE_MUSIC_KEY) || 'background_music.mp3';
-                    const radioButtons = musicOptions.querySelectorAll('input[type="radio"]');
-                    radioButtons.forEach(radio => {
-                        if (radio.value === currentMusic) {
-                            radio.checked = true;
-                        } else {
-                            radio.checked = false;
-                        }
-                    });
-                    return;
-                }
-            }
             localStorage.setItem(LOCAL_STORAGE_MUSIC_KEY, musicPath);
             backgroundMusic.src = musicPath;
             backgroundMusic.load();
