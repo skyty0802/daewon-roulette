@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const LOCAL_STORAGE_NAME_PREFIX = 'rouletteName_';
     const LOCAL_STORAGE_MUSIC_KEY = 'selectedBackgroundMusic';
     const LOCAL_STORAGE_PROBABILITY_PREFIX = 'rouletteProbabilities_';
-    // 새롭게 추가된 로컬 스토리지 키
     const LOCAL_STORAGE_DRAWN_ITEMS_PREFIX = 'rouletteDrawnItems_';
     const LOCAL_STORAGE_HIDE_DRAWN_ITEMS_PREFIX = 'rouletteHideDrawnItems_';
 
@@ -38,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         '#FFC0CB', '#98FB98', '#ADD8E6', '#DDA0DD', '#FFDEAD'
     ];
 
-    // Removed: LOCKED_MUSIC_PASSWORD and LOCKED_MUSIC_VALUE
     const DEVELOPER_PASSWORD = 'skyty0802developer';
 
     class Roulette {
@@ -47,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.items = [];
             this.name = `룰렛 ${this.id + 1}`;
             this.probabilities = {};
-            this.drawnItems = []; // 새로 추가: 나온 항목을 저장할 배열
-            this.hideDrawnItems = false; // 새로 추가: 나온 항목 숨기기 상태
+            this.drawnItems = [];
+            this.hideDrawnItems = false;
 
             this.isSpinning = false;
             this.currentRotation = 0;
@@ -56,10 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
             this.createElements();
             this.loadItemsAndName();
             this.loadProbabilities();
-            this.renderItems(); // 룰렛 항목 렌더링 시점에 drawnItems 적용
+            this.renderItems();
             this.addEventListeners();
             this.updateRouletteNameDisplay();
-            this.handleDrawnItemsVisibility(); // 초기 로드 시 나온 항목 숨기기 적용
+            this.handleDrawnItemsVisibility();
         }
 
         createElements() {
@@ -113,12 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
             this.rouletteTitleDisplay = this.container.querySelector('.roulette-title-display');
             this.editTitleButton = this.container.querySelector('.edit-title-button');
 
-            // 새로 추가된 요소들
             this.drawnItemsList = this.container.querySelector('.drawn-item-list');
             this.hideDrawnItemsCheckbox = this.container.querySelector('.hide-drawn-items-checkbox');
             this.resetDrawnItemsButton = this.container.querySelector('.reset-drawn-items-button');
 
-            this.rouletteItemInput.placeholder = "항목 입력 (쉼표로 구분)";
+            this.rouletteItemInput.placeholder = "항목 입력 (쉼표 또는 1~5)";
         }
 
         addEventListeners() {
@@ -134,11 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
             this.rouletteTitleDisplay.addEventListener('click', () => this.toggleNameEditMode());
             this.editTitleButton.addEventListener('click', () => this.toggleNameEditMode());
 
-            // 새로 추가된 이벤트 리스너
             this.hideDrawnItemsCheckbox.addEventListener('change', () => {
                 this.hideDrawnItems = this.hideDrawnItemsCheckbox.checked;
-                this.saveItemsAndName(); // 체크박스 상태 저장
-                this.handleDrawnItemsVisibility(); // 가시성 즉시 적용
+                this.saveItemsAndName();
+                this.handleDrawnItemsVisibility();
             });
             this.resetDrawnItemsButton.addEventListener('click', () => this.resetDrawnItems());
         }
@@ -152,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (storedName) {
                 this.name = storedName;
             }
-            // 나온 항목과 숨기기 상태 로드
             const storedDrawnItems = localStorage.getItem(LOCAL_STORAGE_DRAWN_ITEMS_PREFIX + this.id);
             if (storedDrawnItems) {
                 this.drawnItems = JSON.parse(storedDrawnItems);
@@ -167,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveItemsAndName() {
             localStorage.setItem(LOCAL_STORAGE_KEY_PREFIX + this.id, JSON.stringify(this.items));
             localStorage.setItem(LOCAL_STORAGE_NAME_PREFIX + this.id, this.name);
-            // 나온 항목과 숨기기 상태 저장
             localStorage.setItem(LOCAL_STORAGE_DRAWN_ITEMS_PREFIX + this.id, JSON.stringify(this.drawnItems));
             localStorage.setItem(LOCAL_STORAGE_HIDE_DRAWN_ITEMS_PREFIX + this.id, JSON.stringify(this.hideDrawnItems));
         }
@@ -194,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const weightedItems = [];
             let totalWeight = 0;
 
-            // hideDrawnItems가 true일 경우, drawnItems에 없는 항목만 포함
             const itemsToConsider = this.hideDrawnItems
                 ? this.items.filter(item => !this.drawnItems.includes(item))
                 : this.items;
@@ -207,10 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // 만약 고려할 항목이 없지만 원래 아이템은 있을 경우 (예: 모두 숨김 처리됨),
-            // 이 경우 전체 아이템을 기본 가중치로 포함하여 룰렛이 돌도록 합니다.
             if (totalWeight === 0 && this.items.length > 0) {
-                    // 그러나 이 경우에도 숨겨진 항목은 제외해야 합니다.
                 const fallbackItems = this.items.filter(item => !this.drawnItems.includes(item));
                 if (fallbackItems.length > 0) {
                     fallbackItems.forEach(item => {
@@ -274,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const listItem = document.createElement('li');
                 listItem.textContent = item;
 
-                // 숨겨진 항목일 경우 CSS 클래스 추가
                 if (this.hideDrawnItems && this.drawnItems.includes(item)) {
                     listItem.classList.add('hidden-drawn-item');
                 }
@@ -292,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.updateRouletteWheel();
             this.saveItemsAndName();
             this.saveProbabilities();
-            this.renderDrawnItemsList(); // 나온 항목 목록도 업데이트
+            this.renderDrawnItemsList();
         }
 
         addItem() {
@@ -302,16 +291,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const newItems = inputValue.split(',').map(item => item.trim()).filter(item => item !== '');
+            let itemsToAdd = [];
+
+            // Check for range input (e.g., "1~5")
+            const rangeMatch = inputValue.match(/^(\d+)\s*~\s*(\d+)$/);
+            if (rangeMatch) {
+                const start = parseInt(rangeMatch[1]);
+                const end = parseInt(rangeMatch[2]);
+
+                if (isNaN(start) || isNaN(end)) {
+                    alert('유효하지 않은 숫자 범위입니다. 예: 1~5');
+                    return;
+                }
+
+                if (start > end) {
+                    alert('시작 숫자는 끝 숫자보다 작거나 같아야 합니다.');
+                    return;
+                }
+
+                for (let i = start; i <= end; i++) {
+                    itemsToAdd.push(String(i)); // Convert to string to be consistent with other items
+                }
+            } else {
+                // Handle comma-separated input as before
+                itemsToAdd = inputValue.split(',').map(item => item.trim()).filter(item => item !== '');
+            }
 
             let addedCount = 0;
-            newItems.forEach(item => {
+            itemsToAdd.forEach(item => {
                 if (!this.items.includes(item)) {
                     this.items.push(item);
                     this.probabilities[item] = 1;
-                    addedCount++;
-                    // 새로운 항목이 추가되면 drawnItems에서 해당 항목을 제거 (만약 이전에 나온 항목이었다면)
                     this.drawnItems = this.drawnItems.filter(drawn => drawn !== item);
+                    addedCount++;
                 }
             });
 
@@ -328,7 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const deletedItem = this.items[index];
             this.items.splice(index, 1);
             delete this.probabilities[deletedItem];
-            // 나온 항목 목록에서도 제거
             this.drawnItems = this.drawnItems.filter(item => item !== deletedItem);
             this.renderItems();
             this.resultText.textContent = '룰렛을 돌려보세요!';
@@ -337,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateRouletteWheel() {
             this.rouletteWheel.innerHTML = '';
 
-            const { weightedItems, totalWeight } = this.getWeightedItems(); // 숨겨진 항목이 제외된 weightedItems
+            const { weightedItems, totalWeight } = this.getWeightedItems();
 
             if (weightedItems.length === 0) {
                 this.rouletteWheel.style.background = '#ddd';
@@ -410,10 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.rouletteWheel.style.transition = 'transform 300s linear';
             this.rouletteWheel.style.transform = `rotate(${targetSpinDegrees}deg)`;
 
-            // 룰렛을 돌리기 시작할 때, hideDrawnItems가 true라면 나온 항목들을 숨깁니다.
             if (this.hideDrawnItems) {
-                this.updateRouletteWheel(); // 룰렛 휠에서 숨겨진 항목을 적용
-                this.renderItems(); // 항목 목록에서 숨겨진 항목을 적용
+                this.updateRouletteWheel();
+                this.renderItems();
             }
         }
 
@@ -470,11 +480,10 @@ document.addEventListener('DOMContentLoaded', () => {
             this.rouletteWheel.addEventListener('transitionend', () => {
                 this.resultText.textContent = `🎉 ${winningItem} 🎉`;
 
-                // 당첨된 항목을 나온 항목 리스트에 추가
                 if (winningItem && !this.drawnItems.includes(winningItem)) {
                     this.drawnItems.push(winningItem);
-                    this.saveItemsAndName(); // 나온 항목 리스트 저장
-                    this.renderDrawnItemsList(); // 나온 항목 목록 업데이트
+                    this.saveItemsAndName();
+                    this.renderDrawnItemsList();
                 }
 
                 const actualFinalAngle = targetFinalRotation % 360;
@@ -514,14 +523,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem(LOCAL_STORAGE_KEY_PREFIX + this.id);
                 localStorage.removeItem(LOCAL_STORAGE_NAME_PREFIX + this.id);
                 localStorage.removeItem(LOCAL_STORAGE_PROBABILITY_PREFIX + this.id);
-                localStorage.removeItem(LOCAL_STORAGE_DRAWN_ITEMS_PREFIX + this.id); // 나온 항목 삭제
-                localStorage.removeItem(LOCAL_STORAGE_HIDE_DRAWN_ITEMS_PREFIX + this.id); // 숨기기 상태 삭제
+                localStorage.removeItem(LOCAL_STORAGE_DRAWN_ITEMS_PREFIX + this.id);
+                localStorage.removeItem(LOCAL_STORAGE_HIDE_DRAWN_ITEMS_PREFIX + this.id);
 
                 rouletteInstances = rouletteInstances.filter(r => r.id !== this.id);
             }
         }
 
-        // 새로 추가된 함수: 나온 항목 목록을 렌더링
         renderDrawnItemsList() {
             this.drawnItemsList.innerHTML = '';
             if (this.drawnItems.length === 0) {
@@ -538,31 +546,27 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // 새로 추가된 함수: 나온 항목의 가시성 처리
         handleDrawnItemsVisibility() {
-            // 룰렛 휠 업데이트 (숨김 설정에 따라 항목이 제거됨)
             this.updateRouletteWheel();
 
-            // 항목 목록 업데이트 (숨김 설정에 따라 CSS 클래스 추가/제거)
             const allListItems = this.itemList.querySelectorAll('li');
             allListItems.forEach(listItem => {
-                const itemText = listItem.textContent.replace('X', '').trim(); // 'X' 버튼 텍스트 제외
+                const itemText = listItem.textContent.replace('X', '').trim();
                 if (this.hideDrawnItems && this.drawnItems.includes(itemText)) {
                     listItem.classList.add('hidden-drawn-item');
                 } else {
                     listItem.classList.remove('hidden-drawn-item');
                 }
             });
-            this.saveItemsAndName(); // 가시성 상태 저장
+            this.saveItemsAndName();
         }
 
-        // 새로 추가된 함수: 나온 항목 초기화
         resetDrawnItems() {
             if (confirm('나온 항목 목록을 초기화하시겠습니까? (숨겨진 항목들도 다시 표시됩니다.)')) {
                 this.drawnItems = [];
-                this.saveItemsAndName(); // 나온 항목 초기화 상태 저장
-                this.renderDrawnItemsList(); // 나온 항목 목록 업데이트
-                this.handleDrawnItemsVisibility(); // 모든 항목 다시 표시
+                this.saveItemsAndName();
+                this.renderDrawnItemsList();
+                this.handleDrawnItemsVisibility();
                 this.resultText.textContent = '룰렛을 돌려보세요!';
             }
         }
@@ -577,7 +581,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const rouletteIds = new Set();
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            // 모든 룰렛 관련 로컬 스토리지 키를 검사하여 ID 추출
             if (key.startsWith(LOCAL_STORAGE_KEY_PREFIX) ||
                 key.startsWith(LOCAL_STORAGE_NAME_PREFIX) ||
                 key.startsWith(LOCAL_STORAGE_PROBABILITY_PREFIX) ||
